@@ -1,3 +1,3 @@
-# High Passes
+# Project Titan
 
-Show Word Counts in 3D.
+Visualize the Word Count of the short story "The Wandering Inn" in 3D.
