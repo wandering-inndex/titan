@@ -6,5 +6,8 @@
   "files.associations": {
     "**/.vscode/*.json": "jsonc"
   },
-  "window.title": "${activeEditorMedium}${separator}${rootName}"
+  "window.title": "${activeEditorMedium}${separator}${rootName}",
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }
