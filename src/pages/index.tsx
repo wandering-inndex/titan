@@ -65,7 +65,7 @@ const Home: NextPage<HomeProps> = ({
           content="The logo of The Wandering Inndex: a fan-made index for The Wandering Inn, a universe by pirateaba."
         />
 
-        <title>Titan | The Wandering Inndex</title>
+        <title>Project Titan | The Wandering Inndex</title>
         <meta
           name="description"
           content="Visualizing the Word Count of The Wandering Inn, a universe by pirateaba."
