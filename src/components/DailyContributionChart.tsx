@@ -28,12 +28,18 @@ const DailyContributionChart: React.FC<DailyContributionChartProps> = ({
     ((data.length - 1) * gridSpacing * (cellSize + cellSpacing) * 7) / 2;
 
   return (
-    <Canvas>
-      <PerspectiveCamera makeDefault position={[-40, 20, 100]} />
-      <OrbitControls target={[centerX, 0, 0]} />
+    <Canvas className="cursor-grab">
+      <PerspectiveCamera makeDefault position={[-30, 20, 1]} />
+      <OrbitControls
+        target={[centerX, 0, 25]}
+        autoRotate
+        autoRotateSpeed={0.5}
+      />
+
       <ambientLight />
-      <pointLight position={[5, 10, 0]} />
-      <pointLight position={[200, 100, 100]} />
+      <pointLight position={[0, 10, 0]} intensity={0.8} />
+      <pointLight position={[200, 10, 20]} intensity={0.8} />
+      <pointLight position={[100, 10, 0]} intensity={0.8} />
 
       {data.map((yearData, index) => {
         const gridPosition: [number, number, number] = [
