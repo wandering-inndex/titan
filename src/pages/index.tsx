@@ -15,8 +15,14 @@ interface HomeProps {
   maxValue: number;
 }
 
-const Home: NextPage<HomeProps> = ({ allYearData }) => {
-  const data: CalendarYearData = allYearData[1] ?? [];
+const Home: NextPage<HomeProps> = ({
+  allYearData,
+  minYear,
+  maxYear,
+  minValue,
+  maxValue,
+}) => {
+  const data: Array<CalendarYearData> = allYearData ?? [];
 
   return (
     <>
@@ -27,7 +33,13 @@ const Home: NextPage<HomeProps> = ({ allYearData }) => {
       </Head>
 
       <div className="h-screen w-screen">
-        <DailyContributionChart data={data} />
+        <DailyContributionChart
+          data={data}
+          minYear={minYear}
+          maxYear={maxYear}
+          minValue={minValue}
+          maxValue={maxValue}
+        />
       </div>
     </>
   );
