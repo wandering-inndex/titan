@@ -105,7 +105,10 @@ export async function getServerSideProps() {
     }
 
     const yearData: CalendarYearData = [];
-    for (let week = 0; week < flatYearData.length / 7; week++) {
+    // Originally `flatYearData.length` but some years have 54 weeks instead.
+    // TODO: Troubleshoot and fix the bug.
+    const maxWeeks = 53;
+    for (let week = 0; week < maxWeeks; week++) {
       const startIndex = week * 7;
       const endIndex = startIndex + 7;
       yearData.push(flatYearData.slice(startIndex, endIndex));
