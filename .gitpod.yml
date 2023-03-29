@@ -1,0 +1,22 @@
+image:
+  file: .gitpod.Dockerfile
+
+tasks:
+  - name: Start Development Server
+    before: pnpm install
+    command: pnpm dev
+ports:
+  - port: 3000
+    onOpen: open-preview
+
+vscode:
+  extensions:
+    - dbaeumer.vscode-eslint
+    - stylelint.vscode-stylelint
+    - esbenp.prettier-vscode
+    - editorconfig.editorconfig
+    - redhat.vscode-yaml
+    - aaron-bond.better-comments
+    - usernamehw.errorlens
+    - eamodio.gitlens
+    - davidanson.vscode-markdownlint

@@ -1,0 +1,14 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "esbenp.prettier-vscode",
+    "editorconfig.editorconfig",
+    "redhat.vscode-yaml",
+    "aaron-bond.better-comments",
+    "usernamehw.errorlens",
+    "eamodio.gitlens",
+    "davidanson.vscode-markdownlint"
+  ],
+  "unwantedRecommendations": []
+}
