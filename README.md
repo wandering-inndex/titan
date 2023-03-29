@@ -7,6 +7,7 @@
 Visualizing the Word Count of [The Wandering Inn](https://wanderinginn.com/), a short story by [pirateaba](https://patreon.com/pirateaba).
 
 ![The Wandering Inndex Logo](./public/ogp.png)
+![Screenshot of Word Count](./public/screenshot.png)
 
 > **IMPORTANT NOTICE**: Copyright for almost all the text in this repository goes to the author, **pirateaba**. Please support them through their official channels:
 >
