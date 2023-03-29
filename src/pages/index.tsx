@@ -3,8 +3,9 @@ import Head from "next/head";
 import { parse as parseYaml } from "yaml";
 
 import type { CalendarYearData, Chapter } from "~/types";
-import StaticHead from "~/components/StaticHead";
-import WordCountsChart from "~/components/WordCountsChart";
+import StaticHead from "~/components/document/StaticHead";
+import SiteHeader from "~/components/ui/SiteHeader";
+import WordCountsChart from "~/components/charts/WordCountsChart";
 import { extractWordsPerDay } from "~/utilities/extractWordsPerDay";
 import {
   DEFAULT_CHAPTER_DATA_YAML_URL,
@@ -38,11 +39,11 @@ const Home: NextPage<HomeProps> = ({
       <StaticHead />
 
       <Head>
-        <title>
-          {DEFAULT_PAGE_TITLE} | {DEFAULT_SITE_NAME}
-        </title>
+        <title>{`${DEFAULT_PAGE_TITLE} | ${DEFAULT_SITE_NAME}`}</title>
         <meta name="description" content={DEFAULT_SITE_DESCRIPTION} />
       </Head>
+
+      <SiteHeader />
 
       <div className="h-screen w-screen cursor-grab">
         <WordCountsChart
