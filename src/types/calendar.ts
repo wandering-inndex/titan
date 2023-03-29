@@ -17,5 +17,8 @@ export type TotalWordsPerDay = Map<string, number>;
  */
 export type CalendarWeekData = Array<number>;
 
-/** An array of arrays per year. First index is the start of the year. Max of 53 items. */
+/**
+ * An array of arrays per year. First index is the start of the year.
+ * Max of 53 items.
+ */
 export type CalendarYearData = Array<CalendarWeekData>;

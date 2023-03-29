@@ -3,15 +3,21 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Box } from "@react-three/drei";
 import type { CalendarYearData, CalendarWeekData } from "~/types";
 
-interface DailyContributionChartProps {
+interface WordCountsChartProps {
+  /** The list of word counts per calendar year. */
   data: Array<CalendarYearData>;
+  /** The minimum year in the dataset. */
   minYear: number;
+  /** The maximum year in the dataset. */
   maxYear: number;
+  /** The minimum value in the dataset. */
   minValue: number;
+  /** The maximum value in the dataset. */
   maxValue: number;
 }
 
-const DailyContributionChart: React.FC<DailyContributionChartProps> = ({
+/** Shows a grid of 3D bar charts to represent the words written per year. */
+const WordCountsChart: React.FC<WordCountsChartProps> = ({
   data,
   minYear,
   maxValue,
@@ -28,7 +34,7 @@ const DailyContributionChart: React.FC<DailyContributionChartProps> = ({
     ((data.length - 1) * gridSpacing * (cellSize + cellSpacing) * 7) / 2;
 
   return (
-    <Canvas className="cursor-grab">
+    <Canvas>
       <PerspectiveCamera makeDefault position={[-30, 20, 1]} />
       <OrbitControls
         target={[centerX, 0, 25]}
@@ -75,4 +81,4 @@ const DailyContributionChart: React.FC<DailyContributionChartProps> = ({
   );
 };
 
-export default DailyContributionChart;
+export default WordCountsChart;

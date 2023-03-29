@@ -3,10 +3,15 @@ import { addDays, formatISO, getDay, getDaysInYear } from "date-fns";
 import type { CalendarYearData, Chapter, TotalWordsPerDay } from "~/types";
 
 interface ReturnData {
-  allYearData: Array<CalendarYearData>;
+  /** The list of word counts per calendar year. */
+  data: Array<CalendarYearData>;
+  /** The minimum year in the dataset. */
   minYear: number;
+  /** The maximum year in the dataset. */
   maxYear: number;
+  /** The minimum value in the dataset. */
   minValue: number;
+  /** The maximum value in the dataset. */
   maxValue: number;
 }
 
@@ -43,7 +48,7 @@ export const extractWordsPerDay = (chapters: Chapter[]): ReturnData => {
       mapTotalWords.set(date, currentValue + wordCount);
     });
 
-  const allYearData: Array<CalendarYearData> = [];
+  const data: Array<CalendarYearData> = [];
   for (let year = minYear; year <= maxYear; year++) {
     const startDay = new Date(Date.UTC(year, 0, 1, 0, 0, 0, 0));
     const endDay = new Date(Date.UTC(year, 11, 31, 0, 0, 0, 0));
@@ -79,11 +84,11 @@ export const extractWordsPerDay = (chapters: Chapter[]): ReturnData => {
       yearData.push(flatYearData.slice(startIndex, endIndex));
     }
 
-    allYearData.push(yearData);
+    data.push(yearData);
   }
 
   return {
-    allYearData,
+    data,
     minYear,
     maxYear,
     minValue,

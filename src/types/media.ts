@@ -1,5 +1,10 @@
-/** Minimal interface for the individual Chapter data. */
+/**
+ * Minimal interface that represents the individual Chapter data.
+ * Check out {@link https://github.com/wandering-inndex/seed-data/blob/main/types/media.ts}
+ * for the full interface.
+ */
 export interface Chapter {
+  /** Unique ID for the chapter. */
   id: string;
   /** Flags for the chapter. */
   meta: {

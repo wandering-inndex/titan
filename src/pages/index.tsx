@@ -3,76 +3,49 @@ import Head from "next/head";
 import { parse as parseYaml } from "yaml";
 
 import type { CalendarYearData, Chapter } from "~/types";
-import DailyContributionChart from "~/components/DailyContributionChart";
+import StaticHead from "~/components/StaticHead";
+import WordCountsChart from "~/components/WordCountsChart";
 import { extractWordsPerDay } from "~/utilities/extractWordsPerDay";
+import {
+  DEFAULT_CHAPTER_DATA_YAML_URL,
+  DEFAULT_PAGE_TITLE,
+  DEFAULT_SITE_DESCRIPTION,
+  DEFAULT_SITE_NAME,
+} from "~/constants";
 
 interface HomeProps {
-  allYearData: Array<CalendarYearData>;
+  /** The list of word counts per calendar year. */
+  data: Array<CalendarYearData>;
+  /** The minimum year in the dataset. */
   minYear: number;
+  /** The maximum year in the dataset. */
   maxYear: number;
+  /** The minimum value in the dataset. */
   minValue: number;
+  /** The maximum value in the dataset. */
   maxValue: number;
 }
 
 const Home: NextPage<HomeProps> = ({
-  allYearData,
+  data,
   minYear,
   maxYear,
   minValue,
   maxValue,
 }) => {
-  const data: Array<CalendarYearData> = allYearData ?? [];
-
   return (
     <>
+      <StaticHead />
+
       <Head>
-        <meta charSet="UTF-8" />
-        <meta
-          property="keywords"
-          content="the wandering inn, encyclopedia, timeline, graph"
-        />
-        <meta property="author" content="The Wandering Inndex contributors" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="theme-color" content="#ffffff" />
-
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="icon" type="image/x-icon" href="/favicon.ico" />
-
-        <meta property="og:image" content="https://inndex.omg.lol/ogp.png" />
-        <meta
-          property="og:image:secure_url"
-          content="https://inndex.omg.lol/ogp.png"
-        />
-        <meta property="og:image:type" content="image/png" />
-        <meta property="og:image:width" content="1080" />
-        <meta property="og:image:height" content="500" />
-        <meta
-          property="og:image:alt"
-          content="The logo of The Wandering Inndex: a fan-made index for The Wandering Inn, a universe by pirateaba."
-        />
-
-        <title>Project Titan | The Wandering Inndex</title>
-        <meta
-          name="description"
-          content="Visualizing the Word Count of The Wandering Inn, a universe by pirateaba."
-        />
+        <title>
+          {DEFAULT_PAGE_TITLE} | {DEFAULT_SITE_NAME}
+        </title>
+        <meta name="description" content={DEFAULT_SITE_DESCRIPTION} />
       </Head>
 
-      <div className="h-screen w-screen">
-        <DailyContributionChart
+      <div className="h-screen w-screen cursor-grab">
+        <WordCountsChart
           data={data}
           minYear={minYear}
           maxYear={maxYear}
@@ -85,17 +58,16 @@ const Home: NextPage<HomeProps> = ({
 };
 
 export const getServerSideProps = async () => {
-  const url = `https://raw.githubusercontent.com/wandering-inndex/seed-data/main/data/media/twi-webnovel-chapters.yaml`;
-  const res = await fetch(url);
-  const data = await res.text();
-  const chapters: Chapter[] = parseYaml(data) as Chapter[];
+  const res = await fetch(DEFAULT_CHAPTER_DATA_YAML_URL);
+  const text = await res.text();
+  const chapters: Chapter[] = parseYaml(text) as Chapter[];
 
-  const { allYearData, minYear, maxYear, minValue, maxValue } =
+  const { data, minYear, maxYear, minValue, maxValue } =
     extractWordsPerDay(chapters);
 
   return {
     props: {
-      allYearData,
+      data,
       minYear,
       maxYear,
       minValue,
