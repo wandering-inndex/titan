@@ -11,13 +11,11 @@ jobs:
     steps:
       - name: checkout repository
         uses: actions/checkout@v3
-      - name: unset git header
-        run: git config --unset-all http.https://github.com/.extraheader
       - name: push to external repository
-        uses: cpina/github-action-push-to-another-repository@main
-        env:
-          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          source-directory: .
-          destination-github-username: njncalub
-          destination-repository-name: external-titan
+          deploy_key: ${{ secrets.SSH_DEPLOY_KEY }}
+          publish_dir: .
+          external_repository: njncalub/external-titan
+          publish_branch: main
+          allow_empty_commit: true
