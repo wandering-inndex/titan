@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { useControls, Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Box } from "@react-three/drei";
 import type { CalendarYearData, CalendarWeekData } from "~/types";
@@ -16,68 +17,123 @@ interface WordCountsChartProps {
   maxValue: number;
 }
 
+const DEFAULT_CELL_SIZE = 1;
+const DEFAULT_CELL_SPACING = 0.2;
+const DEFAULT_GRID_SPACING = 1.2;
+
 /** Shows a grid of 3D bar charts to represent the words written per year. */
 const WordCountsChart: React.FC<WordCountsChartProps> = ({
   data,
   minYear,
   maxValue,
 }) => {
-  const cellSize = 1;
-  const cellSpacing = 0.2;
-  const gridSpacing = 1.2;
+  const { cellSize, cellSpacing, gridSpacing, color } = useControls("Cells", {
+    cellSize: DEFAULT_CELL_SIZE,
+    cellSpacing: DEFAULT_CELL_SPACING,
+    gridSpacing: DEFAULT_GRID_SPACING,
+    color: "#0000ff",
+  });
+
+  const { target, rotate, speed, camera } = useControls("Controls", {
+    camera: [-49, 11, 30],
+    target: [30, 2, 32],
+    rotate: true,
+    speed: {
+      value: 0.5,
+      step: 0.1,
+    },
+  });
+
+  const light1 = useControls("Light 1", {
+    position: {
+      value: [90, 0, 0],
+      step: 10,
+    },
+    intensity: {
+      value: 0.8,
+      step: 1,
+    },
+    color: "#ffffff",
+    enable: true,
+  });
+
+  const light2 = useControls("Light 2", {
+    position: {
+      value: [-180, 0, 0],
+      step: 10,
+    },
+    intensity: {
+      value: 0.8,
+      step: 1,
+    },
+    color: "#ffffff",
+    enable: true,
+  });
 
   const heightScale = useMemo(() => {
     return (words: number) => (words / maxValue) * 10;
   }, [maxValue]);
 
-  const centerX =
-    ((data.length - 1) * gridSpacing * (cellSize + cellSpacing) * 7) / 2;
-
   return (
-    <Canvas>
-      <PerspectiveCamera makeDefault position={[-30, 20, 1]} />
-      <OrbitControls
-        target={[centerX, 0, 25]}
-        autoRotate
-        autoRotateSpeed={0.5}
-      />
+    <>
+      <Leva collapsed />
+      <Canvas>
+        <OrbitControls
+          target={target}
+          autoRotate={rotate}
+          autoRotateSpeed={speed}
+        />
+        <PerspectiveCamera makeDefault position={camera} />
 
-      <ambientLight />
-      <pointLight position={[0, 10, 0]} intensity={0.8} />
-      <pointLight position={[200, 10, 20]} intensity={0.8} />
-      <pointLight position={[100, 10, 0]} intensity={0.8} />
+        <hemisphereLight />
 
-      {data.map((yearData, index) => {
-        const gridPosition: [number, number, number] = [
-          index * (gridSpacing * (cellSize + cellSpacing) * 7),
-          0,
-          0,
-        ];
-        return (
-          <group key={`${minYear + index}`} position={gridPosition}>
-            {yearData.map((week: CalendarWeekData, weekIndex: number) => {
-              return week.map((words: number, dayIndex: number) => {
-                const height = heightScale(words);
-                const position: [number, number, number] = [
-                  (cellSize + cellSpacing) * dayIndex,
-                  height / 2,
-                  (cellSize + cellSpacing) * weekIndex,
-                ];
-                return (
-                  <Box
-                    key={`${weekIndex}-${dayIndex}`}
-                    args={[cellSize, height, cellSize]}
-                    position={position}
-                  >
-                    <meshStandardMaterial color="blue" />
-                  </Box>
-                );
-              });
-            })}
-          </group>
-        );
-      })}
-    </Canvas>
+        {light1.enable && (
+          <directionalLight
+            position={light1.position}
+            intensity={light1.intensity}
+            color={light1.color}
+          />
+        )}
+        {light2.enable && (
+          <directionalLight
+            position={light2.position}
+            intensity={light2.intensity}
+            color={light2.color}
+          />
+        )}
+
+        {data.map((yearData, index) => {
+          const gridPosition: [number, number, number] = [
+            index * (gridSpacing * (cellSize + cellSpacing) * 7),
+            0,
+            0,
+          ];
+          return (
+            <group key={`${minYear + index}`} position={gridPosition}>
+              {yearData.map((week: CalendarWeekData, weekIndex: number) => {
+                return week.map((words: number, dayIndex: number) => {
+                  const height = heightScale(words);
+                  const position: [number, number, number] = [
+                    (cellSize + cellSpacing) * dayIndex,
+                    height / 2,
+                    (cellSize + cellSpacing) * weekIndex,
+                  ];
+                  return (
+                    <Box
+                      key={`${weekIndex}-${dayIndex}`}
+                      args={[cellSize, height, cellSize]}
+                      position={position}
+                    >
+                      <meshPhongMaterial color={color} />
+                    </Box>
+                  );
+                });
+              })}
+            </group>
+          );
+        })}
+      </Canvas>
+    </>
   );
 };
 
