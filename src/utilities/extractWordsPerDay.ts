@@ -1,4 +1,4 @@
-import { addDays, formatISO, getDay, getDaysInYear } from "date-fns";
+import { addDays, formatISO, getDay, getDaysInYear, isMatch } from "date-fns";
 
 import type { CalendarYearData, Chapter, TotalWordsPerDay } from "~/types";
 
@@ -30,22 +30,29 @@ export const extractWordsPerDay = (chapters: Chapter[]): ReturnData => {
   const mapTotalWords: TotalWordsPerDay = new Map<string, number>();
   chapters
     .filter((chapter) => chapter.meta.show === true)
-    .filter((chapter) => (chapter.partOf.webNovel?.ref || 0) > 0)
+    .filter((chapter) => (chapter.partOf.webNovel?.ref ?? 0) > 0)
     .forEach((chapter) => {
-      const date =
-        (chapter.partOf.webNovel?.published || "").split("T")[0] || "";
-      const year = parseInt(date.split("-")[0] ?? "") ?? 0;
-      const wordCount = chapter.partOf.webNovel?.totalWords || 0;
+      const dateString = chapter.partOf.webNovel?.published ?? "";
+      if (!isMatch(dateString, "yyyy-MM-dd'T'HH:mm:ssXXX")) return;
 
-      minYear = Math.min(minYear, year);
-      maxYear = Math.max(maxYear, year);
-      minValue = Math.min(minValue, wordCount);
-      maxValue = Math.max(maxValue, wordCount);
+      const date = dateString.slice(0, 10);
+      const year = parseInt(dateString.slice(0, 4)) || 0;
+      const wordCount = chapter.partOf.webNovel?.totalWords ?? 0;
+
+      if (date === "" || year === 0 || wordCount === 0) {
+        return;
+      }
 
       const currentValue = mapTotalWords.has(date)
         ? mapTotalWords.get(date) ?? 0
         : 0;
-      mapTotalWords.set(date, currentValue + wordCount);
+      const dayValue = currentValue + wordCount;
+      mapTotalWords.set(date, dayValue);
+
+      minYear = Math.min(minYear, year);
+      maxYear = Math.max(maxYear, year);
+      minValue = Math.min(minValue, dayValue);
+      maxValue = Math.max(maxValue, dayValue);
     });
 
   const data: Array<CalendarYearData> = [];

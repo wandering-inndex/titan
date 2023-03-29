@@ -21,7 +21,7 @@ export interface Chapter {
        * The timestamp when this chapter is originally published. This can be
        * found via the `meta[property='article:published_time']` selector.
        */
-      published: string;
+      published: string | null;
       /**
        * Total words based on https://wordcounter.net/. Without the title,
        * author's notes, artworks, etc.
