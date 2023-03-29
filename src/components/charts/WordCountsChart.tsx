@@ -17,29 +17,29 @@ interface WordCountsChartProps {
   maxValue: number;
 }
 
-const DEFAULT_CELL_SIZE = 1;
-const DEFAULT_CELL_SPACING = 0.2;
-const DEFAULT_GRID_SPACING = 1.2;
-
 /** Shows a grid of 3D bar charts to represent the words written per year. */
 const WordCountsChart: React.FC<WordCountsChartProps> = ({
   data,
   minYear,
   maxValue,
 }) => {
-  const { cellSize, cellSpacing, gridSpacing, color } = useControls("Cells", {
-    cellSize: DEFAULT_CELL_SIZE,
-    cellSpacing: DEFAULT_CELL_SPACING,
-    gridSpacing: DEFAULT_GRID_SPACING,
-    color: "#0000ff",
-  });
+  const { cellSize, cellSpacing, gridSpacing, color, scale } = useControls(
+    "Cells",
+    {
+      cellSize: 1.0,
+      cellSpacing: 0.2,
+      gridSpacing: 1.2,
+      color: "#0000ff",
+      scale: 20,
+    }
+  );
 
   const { target, rotate, speed, camera } = useControls("Controls", {
-    camera: [-49, 11, 30],
+    camera: [-49, 17, 30],
     target: [30, 2, 32],
     rotate: true,
     speed: {
-      value: 0.5,
+      value: 1.0,
       step: 0.1,
     },
   });
@@ -51,7 +51,7 @@ const WordCountsChart: React.FC<WordCountsChartProps> = ({
     },
     intensity: {
       value: 0.8,
-      step: 1,
+      step: 1.0,
     },
     color: "#ffffff",
     enable: true,
@@ -64,15 +64,15 @@ const WordCountsChart: React.FC<WordCountsChartProps> = ({
     },
     intensity: {
       value: 0.8,
-      step: 1,
+      step: 1.0,
     },
     color: "#ffffff",
     enable: true,
   });
 
   const heightScale = useMemo(() => {
-    return (words: number) => (words / maxValue) * 10;
-  }, [maxValue]);
+    return (words: number) => (words / maxValue) * scale;
+  }, [maxValue, scale]);
 
   return (
     <>
