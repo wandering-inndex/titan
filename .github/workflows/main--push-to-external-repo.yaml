@@ -1,0 +1,23 @@
+name: (main) push to external repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  push-to-external-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v3
+      - name: unset git header
+        run: git config --unset-all http.https://github.com/.extraheader
+      - name: push to external repository
+        uses: cpina/github-action-push-to-another-repository@main
+        env:
+          SSH_DEPLOY_KEY: ${{ secrets.SSH_DEPLOY_KEY }}
+        with:
+          source-directory: .
+          destination-github-username: njncalub
+          destination-repository-name: external-titan
