@@ -4,8 +4,8 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Box } from "@react-three/drei";
 import type { CalendarYearData, CalendarWeekData } from "~/types";
 
-interface WordCountsChartProps {
-  /** The list of word counts per calendar year. */
+interface SkylinesChartProps {
+  /** The list of number values per calendar year. */
   data: Array<CalendarYearData>;
   /** The minimum year in the dataset. */
   minYear: number;
@@ -17,22 +17,24 @@ interface WordCountsChartProps {
   maxValue: number;
 }
 
-/** Shows a grid of 3D bar charts to represent the words written per year. */
-const WordCountsChart: React.FC<WordCountsChartProps> = ({
+/** Shows a grid of 3D bar charts to represent the number values per year. */
+const SkylinesChart: React.FC<SkylinesChartProps> = ({
   data,
   minYear,
   maxValue,
 }) => {
-  const { cellSize, cellSpacing, gridSpacing, color, scale } = useControls(
-    "Cells",
-    {
+  const { cellSize, cellSpacing, gridSpacing, color, invalidColor, scale } =
+    useControls("Cells", {
       cellSize: 1.0,
       cellSpacing: 0.2,
       gridSpacing: 1.2,
-      color: "#0000ff",
-      scale: 20,
-    }
-  );
+      color: "#a0185a",
+      invalidColor: "#cccccc",
+      scale: {
+        value: 20,
+        min: 1,
+      },
+    });
 
   const { target, rotate, speed, camera } = useControls("Controls", {
     camera: [-49, 17, 30],
@@ -71,7 +73,7 @@ const WordCountsChart: React.FC<WordCountsChartProps> = ({
   });
 
   const heightScale = useMemo(() => {
-    return (words: number) => (words / maxValue) * scale;
+    return (value: number) => (value / maxValue) * scale;
   }, [maxValue, scale]);
 
   return (
@@ -111,8 +113,8 @@ const WordCountsChart: React.FC<WordCountsChartProps> = ({
           return (
             <group key={`${minYear + index}`} position={gridPosition}>
               {yearData.map((week: CalendarWeekData, weekIndex: number) => {
-                return week.map((words: number, dayIndex: number) => {
-                  const height = heightScale(words);
+                return week.map((value: number, dayIndex: number) => {
+                  const height = heightScale(value);
                   const position: [number, number, number] = [
                     (cellSize + cellSpacing) * dayIndex,
                     height / 2,
@@ -124,7 +126,9 @@ const WordCountsChart: React.FC<WordCountsChartProps> = ({
                       args={[cellSize, height, cellSize]}
                       position={position}
                     >
-                      <meshPhongMaterial color={color} />
+                      <meshPhongMaterial
+                        color={value < 0 ? invalidColor : color}
+                      />
                     </Box>
                   );
                 });
@@ -137,4 +141,4 @@ const WordCountsChart: React.FC<WordCountsChartProps> = ({
   );
 };
 
-export default WordCountsChart;
+export default SkylinesChart;

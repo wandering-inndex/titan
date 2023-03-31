@@ -2,11 +2,11 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { parse as parseYaml } from "yaml";
 
-import type { CalendarYearData, Chapter } from "~/types";
+import type { CalendarYearsData, Chapter } from "~/types";
 import StaticHead from "~/components/document/StaticHead";
 import SiteHeader from "~/components/ui/SiteHeader";
-import WordCountsChart from "~/components/charts/WordCountsChart";
-import { extractWordsPerDay } from "~/utilities/extractWordsPerDay";
+import SkylinesChart from "~/components/charts/SkylinesChart";
+import { convertChaptersToCalendarYearData } from "~/utilities/chapters";
 import {
   DEFAULT_CHAPTER_DATA_YAML_URL,
   DEFAULT_PAGE_TITLE,
@@ -16,7 +16,7 @@ import {
 
 interface HomeProps {
   /** The list of word counts per calendar year. */
-  data: Array<CalendarYearData>;
+  data: CalendarYearsData;
   /** The minimum year in the dataset. */
   minYear: number;
   /** The maximum year in the dataset. */
@@ -46,7 +46,7 @@ const Home: NextPage<HomeProps> = ({
       <SiteHeader />
 
       <div className="h-screen w-screen cursor-grab">
-        <WordCountsChart
+        <SkylinesChart
           data={data}
           minYear={minYear}
           maxYear={maxYear}
@@ -64,7 +64,7 @@ export const getServerSideProps = async () => {
   const chapters: Chapter[] = parseYaml(text) as Chapter[];
 
   const { data, minYear, maxYear, minValue, maxValue } =
-    extractWordsPerDay(chapters);
+    convertChaptersToCalendarYearData(chapters);
 
   return {
     props: {
