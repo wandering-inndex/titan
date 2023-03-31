@@ -2,11 +2,11 @@ import React, { useMemo } from "react";
 import { useControls, Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Box } from "@react-three/drei";
-import type { CalendarYearData, CalendarWeekData } from "~/types";
+import type { CalendarYearsData, CalendarWeekData } from "~/types";
 
 interface SkylinesChartProps {
   /** The list of number values per calendar year. */
-  data: Array<CalendarYearData>;
+  data: CalendarYearsData;
   /** The minimum year in the dataset. */
   minYear: number;
   /** The maximum year in the dataset. */

@@ -10,7 +10,7 @@ type Tuple<T, N extends number, R extends T[] = []> = number extends N
   : Tuple<T, N, [T, ...R]>;
 
 /**
- * An array that represents the numbers of words written per day of the week.
+ * An array that represents values per day of the week.
  *
  * For this project, the first day of the week will be Monday, as per ISO 8601:
  *
@@ -24,19 +24,19 @@ type Tuple<T, N extends number, R extends T[] = []> = number extends N
  *
  * @see https://en.wikipedia.org/wiki/ISO_8601
  *
- * If there are no words for that specific day, it will be 0.
+ * If there are no values for that specific day, it will be 0.
  * If that day is not part of the calendar year, it will be -1.
  *
  * @example
  * const week: CalendarWeekData = [1000, 2000, 3000, 4000, 5000, 6000, 7000];
- * const weekNoWords: CalendarYearData = [0, 0, 0, 0, 0, 0, 0];
- * const weekNotInYear: CalendarYearData = [-1, -1, -1, -1, -1, -1, -1];
+ * const weekWithoutValues: CalendarYearData = [0, 0, 0, 0, 0, 0, 0];
+ * const weekWithDaysNotInYear: CalendarYearData = [-1, -1, -1, -1, -1, -1, -1];
  * const weekMixed: CalendarYearData = [-1, -1, 0, 0, 5000, 0, 7000];
  */
 export type CalendarWeekData = Tuple<number, 7>;
 
 /**
- * An array that represents the numbers of words written per week of the year.
+ * An array that represents values per week of the year.
  * Most years have 52 weeks, but if the year starts on a Thursday or is a leap
  * year that starts on a Wednesday, that particular year will have 53 weeks.
  *
@@ -131,8 +131,7 @@ export type CalendarWeekData = Tuple<number, 7>;
 export type CalendarYearData = Array<CalendarWeekData>;
 
 /**
- * A multidimensional array that represents the number of words written per
- * year.
+ * A multidimensional array that represents values per year.
  */
 export type CalendarYearsData = Array<CalendarYearData>;
 
