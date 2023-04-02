@@ -1,7 +1,7 @@
 import { type FC, useMemo } from "react";
 import { useControls, Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, PerspectiveCamera, Box } from "@react-three/drei";
+import { Box, PerspectiveCamera, OrbitControls } from "@react-three/drei";
 
 import type { CalendarYearsData, CalendarWeekData } from "~/types";
 
@@ -30,8 +30,8 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
     });
 
   const { target, rotate, speed, camera } = useControls("Controls", {
-    camera: [-49, 17, 30],
-    target: [30, 2, 32],
+    camera: [-50, 25, 32],
+    target: [34, 0, 32],
     rotate: true,
     speed: {
       value: 1.0,
@@ -66,7 +66,7 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
   });
 
   /** The function to calculate the height of the cells. */
-  const heightScale = useMemo(() => {
+  const scaledHeight = useMemo(() => {
     return (value: number) => (value / maxValue) * scale;
   }, [maxValue, scale]);
 
@@ -75,9 +75,9 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
       <Leva collapsed />
       <Canvas>
         <OrbitControls
-          target={target}
           autoRotate={rotate}
           autoRotateSpeed={speed}
+          target={target}
         />
         <PerspectiveCamera makeDefault position={camera} />
 
@@ -108,7 +108,7 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
             <group key={`grid-${yearValue}`} position={gridPosition}>
               {yearData.map((week: CalendarWeekData, weekIndex: number) => {
                 return week.map((value: number, dayIndex: number) => {
-                  const cellHeight = heightScale(value);
+                  const cellHeight = scaledHeight(value);
                   const cellPosition: [number, number, number] = [
                     (cellSize + cellSpacing) * dayIndex,
                     cellHeight / 2,
