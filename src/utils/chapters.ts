@@ -22,7 +22,7 @@ export const shouldIncludeChapter = (chapter: Chapter): boolean => {
 };
 
 /** The return data from the `convertChaptersToMapping` function. */
-export interface ConvertChaptersToMapOutput {
+export interface ConvertChaptersToMappingOutput {
   /** This maps a date string to the number of words written on that day. */
   mapping: ValuesPerDay;
   /** The minimum year in the dataset. */
@@ -36,15 +36,14 @@ export interface ConvertChaptersToMapOutput {
 }
 
 /**
- * Converts an array of `Chapter` objects to a `ConvertChaptersToMapOutput`
- * mapping.
+ * Converts an array of `Chapter` objects to a `ConvertChaptersToMappingOutput`.
  *
  * @param {Chapter[]} chapters - The array of `Chapter` objects.
- * @returns {ConvertChaptersToMapOutput} - The output of the conversion.
+ * @returns {ConvertChaptersToMappingOutput} - The output of the conversion.
  */
 export const convertChaptersToMapping = (
   chapters: Chapter[]
-): ConvertChaptersToMapOutput => {
+): ConvertChaptersToMappingOutput => {
   const mapping: ValuesPerDay = new Map();
 
   let minYear = Number.POSITIVE_INFINITY;

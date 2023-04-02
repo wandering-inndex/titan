@@ -1,12 +1,12 @@
-import { type NextPage } from "next";
+import type { NextPage, GetServerSideProps } from "next";
 import Head from "next/head";
 import { parse as parseYaml } from "yaml";
 
 import type { CalendarYearsData, Chapter } from "~/types";
 import StaticHead from "~/components/document/StaticHead";
 import SiteHeader from "~/components/ui/SiteHeader";
-import SkylinesChart from "~/components/charts/SkylinesChart";
-import { convertChaptersToCalendarYearData } from "~/utilities/chapters";
+import TitanicGrids from "~/components/charts/TitanicGrids";
+import { convertChaptersToCalendarYearData } from "~/utils";
 import {
   DEFAULT_CHAPTER_DATA_YAML_URL,
   DEFAULT_PAGE_TITLE,
@@ -19,59 +19,43 @@ interface HomeProps {
   data: CalendarYearsData;
   /** The minimum year in the dataset. */
   minYear: number;
-  /** The maximum year in the dataset. */
-  maxYear: number;
-  /** The minimum value in the dataset. */
-  minValue: number;
   /** The maximum value in the dataset. */
   maxValue: number;
 }
 
-const Home: NextPage<HomeProps> = ({
-  data,
-  minYear,
-  maxYear,
-  minValue,
-  maxValue,
-}) => {
+const Home: NextPage<HomeProps> = ({ data, minYear, maxValue }) => {
+  const pageTitle = `${DEFAULT_PAGE_TITLE} | ${DEFAULT_SITE_NAME}`;
+
   return (
     <>
       <StaticHead />
 
       <Head>
-        <title>{`${DEFAULT_PAGE_TITLE} | ${DEFAULT_SITE_NAME}`}</title>
+        <title>{pageTitle}</title>
         <meta name="description" content={DEFAULT_SITE_DESCRIPTION} />
       </Head>
 
       <SiteHeader />
 
-      <div className="h-screen w-screen cursor-grab">
-        <SkylinesChart
-          data={data}
-          minYear={minYear}
-          maxYear={maxYear}
-          minValue={minValue}
-          maxValue={maxValue}
-        />
-      </div>
+      <main className="h-screen w-screen cursor-grab">
+        <TitanicGrids data={data} startYear={minYear} maxValue={maxValue} />
+      </main>
     </>
   );
 };
 
-export const getServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps<HomeProps> = async () => {
   const res = await fetch(DEFAULT_CHAPTER_DATA_YAML_URL);
   const text = await res.text();
   const chapters: Chapter[] = parseYaml(text) as Chapter[];
 
-  const { data, minYear, maxYear, minValue, maxValue } =
+  const { data, minYear, maxValue } =
     convertChaptersToCalendarYearData(chapters);
 
   return {
     props: {
       data,
       minYear,
-      maxYear,
-      minValue,
       maxValue,
     },
   };

@@ -6,7 +6,7 @@ import {
   shouldIncludeChapter,
   convertChaptersToMapping,
   convertChaptersToCalendarYearData,
-  type ConvertChaptersToMapOutput,
+  type ConvertChaptersToMappingOutput,
   type ConvertChaptersToCalendarYearDataOutput,
 } from "./chapters";
 
@@ -248,7 +248,7 @@ describe("(shouldIncludeChapter)", () => {
 describe("(convertChaptersToMapping)", () => {
   test("should convert list to map", () => {
     const got = convertChaptersToMapping(TEST_CHAPTERS);
-    const want: ConvertChaptersToMapOutput = {
+    const want: ConvertChaptersToMappingOutput = {
       mapping: new Map([
         ["2021-12-10", 3500],
         ["2022-01-01", 1000],

@@ -1,35 +1,28 @@
-import React, { useMemo } from "react";
+import { type FC, useMemo } from "react";
 import { useControls, Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, PerspectiveCamera, Box } from "@react-three/drei";
+
 import type { CalendarYearsData, CalendarWeekData } from "~/types";
 
-interface SkylinesChartProps {
+interface TitanicGridsProps {
   /** The list of number values per calendar year. */
   data: CalendarYearsData;
-  /** The minimum year in the dataset. */
-  minYear: number;
-  /** The maximum year in the dataset. */
-  maxYear: number;
-  /** The minimum value in the dataset. */
-  minValue: number;
+  /** The first year in the dataset. */
+  startYear: number;
   /** The maximum value in the dataset. */
   maxValue: number;
 }
 
 /** Shows a grid of 3D bar charts to represent the number values per year. */
-const SkylinesChart: React.FC<SkylinesChartProps> = ({
-  data,
-  minYear,
-  maxValue,
-}) => {
-  const { cellSize, cellSpacing, gridSpacing, color, invalidColor, scale } =
+const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
+  const { cellSize, cellSpacing, gridSpacing, color, unusedColor, scale } =
     useControls("Cells", {
       cellSize: 1.0,
       cellSpacing: 0.2,
       gridSpacing: 1.2,
       color: "#a0185a",
-      invalidColor: "#cccccc",
+      unusedColor: "#cccccc",
       scale: {
         value: 20,
         min: 1,
@@ -72,6 +65,7 @@ const SkylinesChart: React.FC<SkylinesChartProps> = ({
     enable: true,
   });
 
+  /** The function to calculate the height of the cells. */
   const heightScale = useMemo(() => {
     return (value: number) => (value / maxValue) * scale;
   }, [maxValue, scale]);
@@ -88,7 +82,6 @@ const SkylinesChart: React.FC<SkylinesChartProps> = ({
         <PerspectiveCamera makeDefault position={camera} />
 
         <hemisphereLight />
-
         {light1.enable && (
           <directionalLight
             position={light1.position}
@@ -110,24 +103,25 @@ const SkylinesChart: React.FC<SkylinesChartProps> = ({
             0,
             0,
           ];
+          const yearValue = startYear + index;
           return (
-            <group key={`${minYear + index}`} position={gridPosition}>
+            <group key={`grid-${yearValue}`} position={gridPosition}>
               {yearData.map((week: CalendarWeekData, weekIndex: number) => {
                 return week.map((value: number, dayIndex: number) => {
-                  const height = heightScale(value);
-                  const position: [number, number, number] = [
+                  const cellHeight = heightScale(value);
+                  const cellPosition: [number, number, number] = [
                     (cellSize + cellSpacing) * dayIndex,
-                    height / 2,
+                    cellHeight / 2,
                     (cellSize + cellSpacing) * weekIndex,
                   ];
                   return (
                     <Box
                       key={`${weekIndex}-${dayIndex}`}
-                      args={[cellSize, height, cellSize]}
-                      position={position}
+                      args={[cellSize, cellHeight, cellSize]}
+                      position={cellPosition}
                     >
                       <meshPhongMaterial
-                        color={value < 0 ? invalidColor : color}
+                        color={value < 0 ? unusedColor : color}
                       />
                     </Box>
                   );
@@ -141,4 +135,4 @@ const SkylinesChart: React.FC<SkylinesChartProps> = ({
   );
 };
 
-export default SkylinesChart;
+export default TitanicGrids;

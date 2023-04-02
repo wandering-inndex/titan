@@ -126,13 +126,10 @@ export type CalendarWeekData = Tuple<number, 7>;
  * - 2022: 52 weeks
  * - 2022-01-01 SAT: 2022 W52 => 2022 W00
  * - 2022-12-31 SAT: 2022 W52
- *
  */
 export type CalendarYearData = Array<CalendarWeekData>;
 
-/**
- * A multidimensional array that represents values per year.
- */
+/** An array that represents values per year. */
 export type CalendarYearsData = Array<CalendarYearData>;
 
 /**
@@ -146,5 +143,6 @@ export type CalendarYearsData = Array<CalendarYearData>;
  *  ["2021-01-01", 1000],
  *  ["2021-01-02", 2000],
  *  ["2021-01-03", 3000],
- * ]); */
+ * ]);
+ */
 export type ValuesPerDay = Map<string, number>;

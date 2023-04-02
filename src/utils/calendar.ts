@@ -134,7 +134,7 @@ export const convertToCalendarYearData = (
 
     const yearIndex = year - minimumYear;
     const weekIndex = getAdjustedISOWeek(date);
-    const dayIndex = (date.getDay() + 6) % 7;
+    const dayIndex = getISODay(date) - 1;
 
     const yearData = yearsData[yearIndex];
     if (!yearData) continue;
