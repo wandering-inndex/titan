@@ -24,15 +24,20 @@ interface HomeProps {
 }
 
 const Home: NextPage<HomeProps> = ({ data, minYear, maxValue }) => {
-  const pageTitle = `${DEFAULT_PAGE_TITLE} | ${DEFAULT_SITE_NAME}`;
+  const pageTitle = DEFAULT_PAGE_TITLE;
+  const pageDescription = DEFAULT_SITE_DESCRIPTION;
+  const windowTitle = `${pageTitle} | ${DEFAULT_SITE_NAME}`;
 
   return (
     <>
       <StaticHead />
 
       <Head>
-        <title>{pageTitle}</title>
-        <meta name="description" content={DEFAULT_SITE_DESCRIPTION} />
+        <title>{windowTitle}</title>
+        <meta name="description" content={pageDescription} />
+
+        <meta property="og:title" content={pageTitle} />
+        <meta property="og:description" content={pageDescription} />
       </Head>
 
       <SiteHeader />
