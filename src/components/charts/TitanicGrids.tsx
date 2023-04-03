@@ -1,9 +1,10 @@
-import { type FC, useMemo } from "react";
+import { type FC, useId } from "react";
 import { useControls, Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { Box, PerspectiveCamera, OrbitControls } from "@react-three/drei";
 
 import type { CalendarYearsData, CalendarWeekData } from "~/types";
+import { useGridCalculations } from "~/hooks";
 
 interface TitanicGridsProps {
   /** The list of number values per calendar year. */
@@ -16,59 +17,96 @@ interface TitanicGridsProps {
 
 /** Shows a grid of 3D bar charts to represent the number values per year. */
 const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
+  const id = useId();
+
   const { cellSize, cellSpacing, gridSpacing, color, unusedColor, scale } =
     useControls("Cells", {
-      cellSize: 1.0,
-      cellSpacing: 0.2,
-      gridSpacing: 1.2,
+      /** The length of each cell in the grid. */
+      cellSize: {
+        value: 1.0,
+        step: 0.05,
+        min: 1.0,
+      },
+      /** The spacing between each cell in the grid. */
+      cellSpacing: {
+        value: 0.2,
+        step: 0.05,
+        min: 0.1,
+      },
+      /** The spacing between each grid in the scene. */
+      gridSpacing: {
+        value: 1.4,
+        step: 0.05,
+        min: 0.1,
+      },
+      /** The color of the regular cells. */
       color: "#a0185a",
+      /** The color of the unused cells. */
       unusedColor: "#cccccc",
+      /** The scale of the cells. */
       scale: {
-        value: 20,
-        min: 1,
+        value: 20.0,
+        step: 1.0,
+        min: 0.0,
       },
     });
 
-  const { target, rotate, speed, camera } = useControls("Controls", {
-    camera: [-50, 25, 32],
-    target: [34, 0, 32],
+  const { rotate, speed, camera } = useControls("Controls", {
+    /** The position of the camera. */
+    camera: [-50, 25, 29],
+    /** Whether the camera should rotate or not. */
     rotate: true,
+    /** The speed of the camera rotation. */
     speed: {
       value: 1.0,
       step: 0.1,
+      min: 0.0,
     },
   });
 
   const light1 = useControls("Light 1", {
+    /** The position of the light. */
     position: {
       value: [90, 0, 0],
       step: 10,
     },
+    /** The intensity of the light. */
     intensity: {
       value: 0.8,
       step: 1.0,
     },
+    /** The color of the light. */
     color: "#ffffff",
+    /** Whether the light is enabled or not. */
     enable: true,
   });
 
   const light2 = useControls("Light 2", {
+    /** The position of the light. */
     position: {
       value: [-180, 0, 0],
       step: 10,
     },
+    /** The intensity of the light. */
     intensity: {
       value: 0.8,
       step: 1.0,
     },
+    /** The color of the light. */
     color: "#ffffff",
+    /** Whether the light is enabled or not. */
     enable: true,
   });
 
-  /** The function to calculate the height of the cells. */
-  const scaledHeight = useMemo(() => {
-    return (value: number) => (value / maxValue) * scale;
-  }, [maxValue, scale]);
+  const { calcCellHeight, calcGridPosition, calcCellPosition, center } =
+    useGridCalculations(
+      data,
+      gridSpacing,
+      cellSize,
+      cellSpacing,
+      scale,
+      maxValue
+    );
 
   return (
     <>
@@ -77,7 +115,7 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
         <OrbitControls
           autoRotate={rotate}
           autoRotateSpeed={speed}
-          target={target}
+          target={center}
         />
         <PerspectiveCamera makeDefault position={camera} />
 
@@ -97,26 +135,23 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
           />
         )}
 
-        {data.map((yearData, index) => {
-          const gridPosition: [number, number, number] = [
-            index * (gridSpacing * (cellSize + cellSpacing) * 7),
-            0,
-            0,
-          ];
-          const yearValue = startYear + index;
+        {data.map((yearData, yearIndex) => {
+          const forYear = startYear + yearIndex;
+          const gridPosition = calcGridPosition(yearIndex);
           return (
-            <group key={`grid-${yearValue}`} position={gridPosition}>
+            <group key={`${id}-grid-${forYear}`} position={gridPosition}>
               {yearData.map((week: CalendarWeekData, weekIndex: number) => {
                 return week.map((value: number, dayIndex: number) => {
-                  const cellHeight = scaledHeight(value);
+                  const cellHeight = calcCellHeight(value);
                   const cellPosition: [number, number, number] = [
-                    (cellSize + cellSpacing) * dayIndex,
+                    calcCellPosition(dayIndex),
                     cellHeight / 2,
-                    (cellSize + cellSpacing) * weekIndex,
+                    calcCellPosition(weekIndex),
                   ];
+
                   return (
                     <Box
-                      key={`${weekIndex}-${dayIndex}`}
+                      key={`${id}-grid-${weekIndex}-${dayIndex}`}
                       args={[cellSize, cellHeight, cellSize]}
                       position={cellPosition}
                     >
