@@ -7,7 +7,7 @@ const StaticHead: React.FC = () => {
         <meta charSet="UTF-8" />
         <meta
           property="keywords"
-          content="the wandering inn, encyclopedia, timeline, graph"
+          content="the wandering inn, 3d, data-visualization"
         />
         <meta property="author" content="The Wandering Inndex contributors" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,17 +29,20 @@ const StaticHead: React.FC = () => {
         />
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-        <meta property="og:image" content="https://inndex.omg.lol/ogp.png" />
+        <meta
+          property="og:image"
+          content="https://titan.inndex.omg.lol/ogp.png"
+        />
         <meta
           property="og:image:secure_url"
-          content="https://inndex.omg.lol/ogp.png"
+          content="https://titan.inndex.omg.lol/ogp.png"
         />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1080" />
         <meta property="og:image:height" content="500" />
         <meta
           property="og:image:alt"
-          content="The logo of The Wandering Inndex: a fan-made index for The Wandering Inn, a universe by pirateaba."
+          content="Screenshot for the daily word count of The Wandering Inn, a short story by pirateaba."
         />
       </Head>
     </>
