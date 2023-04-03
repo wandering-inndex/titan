@@ -4,7 +4,8 @@
 
 See: https://wanderinginn.com/fanworks-permissions/
 
-Copyright for almost all the text in this repository goes to the author, **pirateaba**. Please support them through their official channels:
+Copyright for The Wandering Inn and its characters goes to the author,
+**pirateaba**. Please support them through their official channels:
 
 - https://wanderinginn.com
 - https://store.wanderinginn.com

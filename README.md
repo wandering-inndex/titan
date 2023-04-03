@@ -6,20 +6,25 @@
 
 Visualizing the Word Count of [The Wandering Inn](https://wanderinginn.com/), a short story by [pirateaba](https://patreon.com/pirateaba).
 
-![The Wandering Inndex Logo](./public/ogp.png)
-![Screenshot of Word Count](./public/screenshot.png)
+[![The Wandering Inndex Logo](./docs/inndex.png)](https://inndex.omg.lol/)
+[![Screenshot of Word Count](./docs/screenshot.png)](https://titan.inndex.omg.lol/)
 
-> **IMPORTANT NOTICE**: Copyright for almost all the text in this repository goes to the author, **pirateaba**. Please support them through their official channels:
+> **IMPORTANT NOTICE**: The project's name is based on a [character](https://thewanderinginn.fandom.com/wiki/Niers_Astoragon) in [The Wandering Inn](https://wanderinginn.com/). Copyright for The Wandering Inn and its characters goes to the author, **pirateaba**. Please support them through their official channels:
 >
 > - https://wanderinginn.com
 > - https://store.wanderinginn.com
 > - https://patreon.com/pirateaba
 
-This repository contains the frontend code for the [Project Titan page](https://titan.inndex.omg.lol). Contributions are very much welcome!
+This project is inspired by [GitHub Skyline](https://skyline.github.com/), a web application that creates a 3D visualization of a user's GitHub contributions. A tutorial for recreating this type of 3D visualization can be found [on this blog post](https://napjose.ph/posts/create-a-3d-contribution-chart-using-react-three-fiber).
 
 ## Requirements
 
 - [Node.js](https://nodejs.org/)
+- [pnpm](https://pnpm.io/)
+
+## Development
+
+Please see bundled [DEVELOPMENT file](./DEVELOPMENT.md) for more details.
 
 ## Contributing
 
