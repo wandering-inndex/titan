@@ -37,7 +37,7 @@ const Home: NextPage<HomeProps> = ({ data, minYear, maxValue }) => {
 
       <SiteHeader />
 
-      <main className="h-screen w-screen cursor-grab">
+      <main className="h-screen w-screen cursor-move">
         <TitanicGrids data={data} startYear={minYear} maxValue={maxValue} />
       </main>
     </>
