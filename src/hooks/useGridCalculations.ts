@@ -31,7 +31,9 @@ export const useGridCalculations = (
     };
 
     /** Calculates the scaled height of the cells based on the maximum value. */
-    const calcCellHeight = (value: number) => (value / maxValue) * scale;
+    const calcCellHeight = (value: number) => {
+      return value >= 0 ? (value / maxValue) * scale : 0;
+    };
 
     /** Calculates the adjusted starting position of a cell. */
     const calcCellPosition = (index: number): number => {
