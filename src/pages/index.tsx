@@ -39,7 +39,7 @@ const Home: NextPage<HomeProps> = ({ data, minYear, maxValue }) => {
         <meta property="og:description" content={pageDescription} />
       </Head>
 
-      <SiteHeader />
+      <SiteHeader data-testid="site-header" />
 
       <main className="h-screen w-screen cursor-move">
         <TitanicGrids data={data} startYear={minYear} maxValue={maxValue} />

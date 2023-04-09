@@ -13,7 +13,6 @@ const HeadMock: FC<HeadMockProps> = ({ children }) => {
   return (
     // eslint-disable-next-line @next/next/no-head-element
     <head data-testid="mock-head">
-      <title>Something else</title>
       {ReactDOM.createPortal(children, document.head)}
     </head>
   );

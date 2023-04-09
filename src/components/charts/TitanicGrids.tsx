@@ -2,6 +2,7 @@ import { type FC, useId } from "react";
 import { useControls, Leva } from "leva";
 import { Canvas } from "@react-three/fiber";
 import { Box, PerspectiveCamera, OrbitControls } from "@react-three/drei";
+import { ResizeObserver } from "@juggle/resize-observer";
 
 import type { CalendarYearsData, CalendarWeekData } from "~/types";
 import { useGridCalculations } from "~/hooks";
@@ -110,8 +111,11 @@ const TitanicGrids: FC<TitanicGridsProps> = ({ data, startYear, maxValue }) => {
 
   return (
     <>
-      <Leva collapsed />
-      <Canvas>
+      <Leva collapsed data-testid="titanic-grids-leva" />
+      <Canvas
+        resize={{ polyfill: ResizeObserver }}
+        data-testid="titanic-grids-canvas"
+      >
         <OrbitControls
           autoRotate={rotate}
           autoRotateSpeed={speed}

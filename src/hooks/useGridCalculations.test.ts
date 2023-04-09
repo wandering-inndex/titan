@@ -4,7 +4,7 @@ import { renderHook } from "@testing-library/react";
 import type { CalendarYearsData, ValuesPerDay } from "~/types";
 
 import { useGridCalculations, type ReturnValues } from "./useGridCalculations";
-import { convertToCalendarYearData } from "../utils";
+import { convertToCalendarYearData } from "~/utils";
 
 /** Calculates the maximum value in the ValuesPerDay. */
 const getMaxValue = (valuesPerDay: ValuesPerDay): number =>
