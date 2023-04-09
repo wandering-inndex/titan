@@ -12,7 +12,7 @@ export default defineConfig({
     },
     coverage: {
       provider: "c8",
-      reporter: ["text", "html"],
+      reporter: ["text", "html", "text-summary"],
     },
   },
 });
