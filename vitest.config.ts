@@ -11,6 +11,15 @@ export default defineConfig({
       "~/": fileURLToPath(new URL("./src/", import.meta.url)),
     },
     coverage: {
+      all: true,
+      include: ["src/**/*.{ts,tsx}"],
+      exclude: [
+        "src/**/*.test.{ts,tsx}",
+        // The types are not tested.
+        "src/types/**/*",
+        // The barrel files are not tested.
+        "src/**/index.ts",
+      ],
       provider: "c8",
       reporter: ["text", "html", "text-summary"],
     },

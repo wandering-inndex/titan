@@ -59,4 +59,5 @@ To run the tests, you can execute:
 
 ```bash
 pnpm test
+pnpm coverage
 ```

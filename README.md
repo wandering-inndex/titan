@@ -2,6 +2,10 @@
 
 ![Node Version](https://img.shields.io/badge/node-v18.14.2-black)
 ![License](https://img.shields.io/badge/license-MIT-blue)
+![Coverage: Statements](https://raw.githubusercontent.com/wandering-inndex/titan/coverage/badges/statements.svg)
+![Coverage: Branches](https://raw.githubusercontent.com/wandering-inndex/titan/coverage/badges/branches.svg)
+![Coverage: Functions](https://raw.githubusercontent.com/wandering-inndex/titan/coverage/badges/functions.svg)
+![Coverage: Lines](https://raw.githubusercontent.com/wandering-inndex/titan/coverage/badges/lines.svg)
 [![Open with Gitpod](https://img.shields.io/badge/Open%20with-Gitpod-908a85?logo=gitpod)](https://gitpod.io/#https://github.com/wandering-inndex/titan)
 
 Visualizing the Word Count of [The Wandering Inn](https://wanderinginn.com/), a short story by [pirateaba](https://patreon.com/pirateaba).
