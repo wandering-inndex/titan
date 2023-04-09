@@ -149,7 +149,7 @@ describe("(initializeEmptyCalendarYearData)", () => {
 
 describe("(convertToCalendarYearData)", () => {
   test("valid dates of 2022", () => {
-    const data: Map<string, number> = new Map([
+    const data: ValuesPerDay = new Map<string, number>([
       ["2022-01-01T00:00:00+00:00", 1000],
       ["2022-01-02T00:00:00+00:00", 2000],
       ["2022-04-08T00:00:00+00:00", 408],

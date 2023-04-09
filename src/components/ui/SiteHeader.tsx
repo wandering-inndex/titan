@@ -11,7 +11,7 @@ const SiteHeader: React.FC = () => {
           title="The Wandering Inndex - A fan-made index for The Wandering Inn, a universe by pirateaba."
           className="mx-auto block w-[15rem]"
         >
-          <StaticSiteLogoLine />
+          <StaticSiteLogoLine data-testid="static-site-logo-line" />
         </Link>
       </nav>
     </>

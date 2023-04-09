@@ -2,7 +2,32 @@ import { useMemo } from "react";
 
 import type { CalendarYearsData } from "~/types";
 
-/** Creates a set of calculations for the grid. */
+/** The return values from the hook. */
+export interface ReturnValues {
+  /** Calculates the scaled height of the cells based on the maximum value. */
+  calcCellHeight: (value: number) => number;
+  /** Calculates the starting position of the grid. */
+  calcGridPosition: (index: number) => [number, number, number];
+  /** Calculates the adjusted starting position of a cell. */
+  calcCellPosition: (index: number) => number;
+  /** The center of the Canvas. */
+  center: [number, number, number];
+}
+
+/**
+ * Creates a set of calculations for the grid.
+ *
+ * This assumes that `data` is not empty. Handling empty data is the
+ * responsibility of the caller.
+ *
+ * @param {CalendarYearsData} data - The data to be used for the calculations.
+ * @param {number} gridSpacing - The spacing between the grids.
+ * @param {number} cellSize - The length of each cell in the grid.
+ * @param {number} cellSpacing - The spacing between the cells.
+ * @param {number} scale - The scale of the cells.
+ * @param {number} maxValue - The maximum value of the data.
+ * @returns {ReturnValues} The calculations.
+ */
 export const useGridCalculations = (
   /** The data to be used for the calculations. */
   data: CalendarYearsData,
@@ -32,7 +57,8 @@ export const useGridCalculations = (
 
     /** Calculates the scaled height of the cells based on the maximum value. */
     const calcCellHeight = (value: number) => {
-      return value >= 0 ? (value / maxValue) * scale : 0;
+      // prettier-ignore
+      return (value > 0 && maxValue > 0) ? (value / maxValue) * scale : 0;
     };
 
     /** Calculates the adjusted starting position of a cell. */
@@ -52,12 +78,15 @@ export const useGridCalculations = (
     const totalLength = gridLength;
 
     /** The center of the Canvas. */
-    const center: [number, number, number] = [
-      totalWidth / 2,
-      0,
-      totalLength / 2,
-    ];
+    const center: [number, number, number] =
+      data.length > 0 ? [totalWidth / 2, 0, totalLength / 2] : [0, 0, 0];
 
-    return { calcCellHeight, calcGridPosition, calcCellPosition, center };
+    const returnValues: ReturnValues = {
+      calcCellHeight,
+      calcGridPosition,
+      calcCellPosition,
+      center,
+    };
+    return returnValues;
   }, [data, gridSpacing, cellSize, cellSpacing, maxValue, scale]);
 };

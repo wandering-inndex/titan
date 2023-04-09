@@ -18,5 +18,15 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
+  compiler: {
+    /**
+     * Remove `^data-test` attributes, similar to:
+     * `babel-plugin-react-remove-properties`.
+     *
+     * @see {@link https://nextjs.org/docs/advanced-features/compiler#remove-react-properties}
+     */
+    reactRemoveProperties: true,
+  },
 };
 export default config;
